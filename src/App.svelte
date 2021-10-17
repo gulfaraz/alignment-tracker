@@ -1,4 +1,7 @@
 <script lang="ts">
+    import "bulma/css/bulma.css";
+    import { Button } from "svelma";
+
     export let name: string;
 </script>
 
@@ -8,6 +11,7 @@
         Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
         how to build Svelte apps.
     </p>
+    <Button type="is-primary">I'm a Button!</Button>
 </main>
 
 <style>
