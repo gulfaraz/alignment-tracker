@@ -4,23 +4,29 @@
 
     let el;
 
-    function getRandomInt(min, max) {
+    const getRandomInt = (min, max) => {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    };
+
+    const jitter = () => {
+        return Math.max(0.1, Math.random() / 2);
+    };
 
     onMount(() => {
         // set the dimensions and margins of the graph
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
             width = 610 - margin.left - margin.right,
             height = 550 - margin.top - margin.bottom,
-            scale = 9,
+            scale = 5,
             domain = [-scale, scale],
             paddedDomain = [-scale - 1, scale + 1],
-            dataSize = 10,
-            circleRadius = 3,
-            tickSize = 0;
+            dataSize = 30,
+            circleRadius = 10,
+            tickSize = 0,
+            strokeColor = '#69b3a2',
+            fillColor = 'transparent';
 
         // append the svg object to the body of the page
         var svg = d3
@@ -58,10 +64,11 @@
             .data(data)
             .enter()
             .append('circle')
-            .attr('cx', d => x(d[0]))
-            .attr('cy', d => y(d[1]))
+            .attr('cx', d => x(d[0] + jitter()))
+            .attr('cy', d => y(d[1] + jitter()))
             .attr('r', circleRadius)
-            .style('fill', '#69b3a2');
+            .style('stroke', strokeColor)
+            .style('fill', fillColor);
     });
 </script>
 

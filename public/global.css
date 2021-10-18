@@ -3,6 +3,7 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden !important;
 }
 
 body {
@@ -75,4 +76,8 @@ path {
     stroke: grey;
     stroke-width: 1;
     shape-rendering: crispEdges;
+}
+
+.is-halfwidth {
+    width: 50%;
 }

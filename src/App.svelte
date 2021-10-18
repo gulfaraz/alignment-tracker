@@ -3,6 +3,7 @@
     import '@fortawesome/fontawesome-free/css/all.css';
     import Navbar from './Navbar.svelte';
     import Chart from './Chart.svelte';
+    import Table from './Table.svelte';
     import Footer from './Footer.svelte';
 
     export let name: string;
@@ -10,7 +11,14 @@
 
 <main>
     <Navbar />
-    <Chart />
+    <div class="columns is-mobile is-centered">
+        <div class="column is-half">
+            <Chart />
+        </div>
+        <div class="column is-half">
+            <Table />
+        </div>
+    </div>
     <Footer />
 </main>
 
