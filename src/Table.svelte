@@ -19,9 +19,9 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Alignment</th>
-                <th>Action</th>
-                <th>Delete</th>
+                <th class="has-text-centered">Alignment</th>
+                <th class="has-text-centered">Action</th>
+                <th class="has-text-centered">Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -70,7 +70,7 @@
                             </Button>
                         </div>
                     </td>
-                    <td>
+                    <td class="has-text-centered">
                         <Button
                             class="is-danger"
                             on:click={() => deleteCharacter(index)}

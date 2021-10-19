@@ -186,8 +186,8 @@
 
 <main>
     <Navbar />
-    <div class="columns is-mobile is-centered">
-        <div class="column is-half">
+    <div class="columns is-desktop is-centered">
+        <div class="column is-three-fifths-desktop">
             <Chart
                 {characters}
                 {scale}
@@ -198,7 +198,7 @@
                 {neutralDisplay}
             />
         </div>
-        <div class="column is-half">
+        <div class="column">
             <Table
                 {characters}
                 {maxCharacters}
@@ -222,5 +222,8 @@
     main {
         padding: 1em;
         margin: 0 auto;
+    }
+    .column {
+        overflow: auto;
     }
 </style>
