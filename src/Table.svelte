@@ -1,78 +1,17 @@
 <script>
-    import { onMount } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     import { Button, Icon, Input } from 'svelma';
 
-    let loading = false;
-    let users = [];
-    const count = 3;
-    const maxCharacters = 30;
-    const axisEthics = 'ethics';
-    const axisMorality = 'morality';
-    const increaseStep = +1;
-    const decreaseStep = -1;
+    export let characters = [],
+        maxCharacters = 30;
 
-    async function update() {
-        loading = true;
-
-        users = [];
-        users = (
-            await (
-                await fetch(`https://randomuser.me/api/?results=${count}`)
-            ).json()
-        ).results;
-
-        loading = false;
-    }
-
-    const getRandomAlignment = () => {
-        var r = Math.floor(Math.random() * 4);
-
-        switch (r) {
-            case 0:
-                return 'Chaotic Evil';
-            case 1:
-                return 'Chaotic Neutral';
-            case 2:
-                return 'Chaotic Good';
-            case 3:
-                return 'Lawful Good';
-            case 4:
-                return 'Lawful Neutral';
-            case 5:
-                return 'Lawful Evil';
-            case 6:
-                return 'Neutral Good';
-            case 7:
-                return 'Neutral Evil';
-            case 8:
-                return 'True Neutral';
-        }
-    };
-
-    const addCharacter = async () => {
-        console.log('before addCharacter', users);
-        loading = true;
-        users.push(
-            (await (await fetch(`https://randomuser.me/api/?results=1`)).json())
-                .results[0]
-        );
-        users = users;
-        loading = false;
-        console.log('after addCharacter', users);
-    };
-
-    const deleteCharacter = index => {
-        users.splice(index, 1);
-        users = users;
-    };
-
-    const changeAlignment = (index, axis, direction) => {
-        // users[index][axis] = users[index][axis] + direction;
-        // users[index].name.first = users[index].name.first + axis[0] + direction;
-        users = users;
-    };
-
-    onMount(() => update());
+    const dispatch = createEventDispatcher();
+    const addCharacter = () => dispatch('addCharacter');
+    const deleteCharacter = index => dispatch('deleteCharacter', { index });
+    const decreaseEthics = index => dispatch('decreaseEthics', { index });
+    const increaseEthics = index => dispatch('increaseEthics', { index });
+    const decreaseMorality = index => dispatch('decreaseMorality', { index });
+    const increaseMorality = index => dispatch('increaseMorality', { index });
 </script>
 
 <div class="table-container">
@@ -86,39 +25,29 @@
             </tr>
         </thead>
         <tbody>
-            {#each users as user, index}
+            {#each characters as character, index}
                 <tr>
                     <td>
                         <Input
-                            bind:value={user.name.first}
+                            bind:value={character.name}
                             type="text"
                             placeholder="Name"
                         />
                     </td>
-                    <td class="has-text-centered">{getRandomAlignment()}</td>
+                    <td class="has-text-centered">{character.alignment}</td>
                     <td class="has-text-centered">
                         <div
                             class="buttons has-addons is-justify-content-center"
                         >
                             <Button
                                 class="is-warning is-halfwidth"
-                                on:click={() =>
-                                    changeAlignment(
-                                        index,
-                                        axisEthics,
-                                        decreaseStep
-                                    )}
+                                on:click={() => decreaseEthics(index)}
                             >
                                 Chaotic
                             </Button>
                             <Button
                                 class="is-info is-halfwidth"
-                                on:click={() =>
-                                    changeAlignment(
-                                        index,
-                                        axisEthics,
-                                        increaseStep
-                                    )}
+                                on:click={() => increaseEthics(index)}
                             >
                                 Lawful
                             </Button>
@@ -128,23 +57,13 @@
                         >
                             <Button
                                 class="is-warning is-halfwidth"
-                                on:click={() =>
-                                    changeAlignment(
-                                        index,
-                                        axisMorality,
-                                        decreaseStep
-                                    )}
+                                on:click={() => decreaseMorality(index)}
                             >
                                 Evil
                             </Button>
                             <Button
                                 class="is-info is-halfwidth"
-                                on:click={() =>
-                                    changeAlignment(
-                                        index,
-                                        axisMorality,
-                                        increaseStep
-                                    )}
+                                on:click={() => increaseMorality(index)}
                             >
                                 Good
                             </Button>
@@ -160,7 +79,7 @@
                     </td>
                 </tr>
             {/each}
-            {#if users.length < maxCharacters}
+            {#if characters.length < maxCharacters}
                 <tr>
                     <td colspan="4">
                         <Button
@@ -182,6 +101,7 @@
         overflow: auto;
         height: 550px;
     }
+
     .table-container thead th {
         position: sticky;
         top: 0;
