@@ -56,9 +56,10 @@
             '#264653',
             '#2a9d8f',
             '#e76f51',
-        ];
+        ],
+        localStorageKey = 'characters';
 
-    let characters = [];
+    let characters = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
     const jitter = () => {
         return Math.max(jitterMinimum, Math.random() * jitterFactor);
@@ -104,6 +105,7 @@
         });
 
         characters = characters;
+        localStorage.setItem(localStorageKey, JSON.stringify(characters));
     };
 
     const deleteCharacter = (event: CustomEvent) => {
@@ -111,6 +113,7 @@
 
         characters.splice(index, 1);
         characters = characters;
+        localStorage.setItem(localStorageKey, JSON.stringify(characters));
     };
 
     const changeAlignment = (
@@ -131,6 +134,7 @@
         );
 
         characters = characters;
+        localStorage.setItem(localStorageKey, JSON.stringify(characters));
     };
 
     const getAlignment = (ethics: number, morality: number) => {
