@@ -21,7 +21,7 @@
         jitterFactor = 0.5,
         scale = 5,
         idLength = 9,
-        scaleThreshold = Math.floor((scale * 2) / 3),
+        scaleThreshold = Math.floor(scale / 2),
         colors = [
             '#2f4f4f',
             '#556b2f',
@@ -59,7 +59,53 @@
         ],
         localStorageKey = 'characters';
 
-    let characters = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    const getAlignment = (ethics: number, morality: number) => {
+        var alignment = trueNeutralDisplay;
+        var ethicsValue = neutralDisplay;
+        var moralityValue = neutralDisplay;
+        if (ethics < -scaleThreshold) {
+            ethicsValue = chaoticDisplay;
+        } else if (ethics > scaleThreshold) {
+            ethicsValue = lawfulDisplay;
+        }
+        if (morality < -scaleThreshold) {
+            moralityValue = evilDisplay;
+        } else if (morality > scaleThreshold) {
+            moralityValue = goodDisplay;
+        }
+        if (ethicsValue != neutralDisplay || moralityValue != neutralDisplay) {
+            alignment = `${ethicsValue} ${moralityValue}`;
+        }
+        return alignment;
+    };
+
+    const getDefaultCharacters = () => [
+        {
+            name: 'Mordenkainen',
+            alignment: getAlignment(-4, 1),
+            ethics: -4,
+            morality: 1,
+            color: colors[0],
+        },
+        {
+            name: 'Tenser',
+            alignment: getAlignment(4, 4),
+            ethics: 4,
+            morality: 4,
+            color: colors[4],
+        },
+        {
+            name: 'Sprigg',
+            alignment: getAlignment(-5, -3),
+            ethics: -5,
+            morality: -3,
+            color: colors[17],
+        },
+    ];
+
+    let characters =
+        JSON.parse(localStorage.getItem(localStorageKey)) ||
+        getDefaultCharacters();
 
     const jitter = () => {
         return Math.max(jitterMinimum, Math.random() * jitterFactor);
@@ -135,26 +181,6 @@
 
         characters = characters;
         localStorage.setItem(localStorageKey, JSON.stringify(characters));
-    };
-
-    const getAlignment = (ethics: number, morality: number) => {
-        var alignment = trueNeutralDisplay;
-        var ethicsValue = neutralDisplay;
-        var moralityValue = neutralDisplay;
-        if (ethics < -scaleThreshold) {
-            ethicsValue = chaoticDisplay;
-        } else if (ethics > scaleThreshold) {
-            ethicsValue = lawfulDisplay;
-        }
-        if (morality < -scaleThreshold) {
-            moralityValue = evilDisplay;
-        } else if (morality > scaleThreshold) {
-            moralityValue = goodDisplay;
-        }
-        if (ethicsValue != neutralDisplay || moralityValue != neutralDisplay) {
-            alignment = `${ethicsValue} ${moralityValue}`;
-        }
-        return alignment;
     };
 </script>
 
