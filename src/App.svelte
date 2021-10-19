@@ -21,13 +21,48 @@
         jitterFactor = 0.5,
         scale = 5,
         idLength = 9,
-        scaleThreshold = Math.floor((scale * 2) / 3);
+        scaleThreshold = Math.floor((scale * 2) / 3),
+        colors = [
+            '#2f4f4f',
+            '#556b2f',
+            '#8b4513',
+            '#a52a2a',
+            '#191970',
+            '#708090',
+            '#808000',
+            '#483d8b',
+            '#008000',
+            '#663399',
+            '#008080',
+            '#b8860b',
+            '#4682b4',
+            '#000080',
+            '#d2691e',
+            '#800080',
+            '#b03060',
+            '#9932cc',
+            '#ff4500',
+            '#c71585',
+            '#0000cd',
+            '#4169e1',
+            '#dc143c',
+            '#9370db',
+            '#0000ff',
+            '#a020f0',
+            '#ff6347',
+            '#ff00ff',
+            '#1e90ff',
+            '#ff1493',
+            '#264653',
+            '#2a9d8f',
+            '#e76f51',
+        ];
+
+    let characters = [];
 
     const jitter = () => {
         return Math.max(jitterMinimum, Math.random() * jitterFactor);
     };
-
-    let characters = [];
 
     const makeid = length => {
         var result = '';
@@ -48,6 +83,14 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
+    const getColor = () => {
+        const unusedColors = colors.filter(
+            color =>
+                characters.findIndex(character => character.color == color) < 0
+        );
+        return unusedColors[Math.floor(Math.random() * unusedColors.length)];
+    };
+
     const addCharacter = () => {
         const ethics = getRandomInt(-scale, scale) + jitter(),
             morality = getRandomInt(-scale, scale) + jitter();
@@ -57,6 +100,7 @@
             alignment: getAlignment(ethics, morality),
             ethics,
             morality,
+            color: getColor(),
         });
 
         characters = characters;
@@ -114,7 +158,15 @@
     <Navbar />
     <div class="columns is-mobile is-centered">
         <div class="column is-half">
-            <Chart {characters} {scale} />
+            <Chart
+                {characters}
+                {scale}
+                {goodDisplay}
+                {evilDisplay}
+                {chaoticDisplay}
+                {lawfulDisplay}
+                {neutralDisplay}
+            />
         </div>
         <div class="column is-half">
             <Table

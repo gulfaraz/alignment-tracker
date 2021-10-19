@@ -32,6 +32,7 @@
                             bind:value={character.name}
                             type="text"
                             placeholder="Name"
+                            style="color: {character.color}"
                         />
                     </td>
                     <td class="has-text-centered">{character.alignment}</td>
